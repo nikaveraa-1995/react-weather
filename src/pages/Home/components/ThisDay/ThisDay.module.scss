@@ -1,0 +1,10 @@
+@import '/src/styles/variables.scss';
+
+.this__day {
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  background: $light-background;
+  box-shadow: $box-shadow;
+  border-radius: $border-radius;
+}
