@@ -1,7 +1,14 @@
 @import '/node_modules/normalize.css/normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
 body {
+  position: relative;
   font-family: 'Montserrat', sans-serif;
 }
 
