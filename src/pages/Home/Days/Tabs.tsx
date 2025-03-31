@@ -29,6 +29,7 @@ export const Tabs = (props: Props) => {
           </div>
         ))}
       </div>
+
       <div className={s.cancel}>Cancel</div>
     </div>
   );

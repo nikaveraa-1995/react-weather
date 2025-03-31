@@ -1,7 +1,7 @@
 import s from './Header.module.scss';
 import Select from 'react-select';
 import { GlobalSvgSelector } from '../../assets/icons/global/GlobalSvgSelector';
-import { useTheme } from '../../hooks/UseTheme';
+import { useTheme } from '../../hooks/useTheme';
 import { Theme } from '../../context/ThemeContext';
 
 interface Props {}
