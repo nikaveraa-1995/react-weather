@@ -4,6 +4,7 @@ import { Weather } from '../../../../store/types/types';
 import s from './ThisDay.module.scss';
 import { useSelector } from 'react-redux';
 import { selectCurrentDate } from '../../../../store/selectors';
+import { useState, useEffect } from 'react';
 
 interface Props {
   weather: Weather;
@@ -26,6 +27,13 @@ const weatherIcons: { [key: string]: string } = {
 export const ThisDay = ({ weather, city }: Props) => {
   const currentDate = useSelector(selectCurrentDate);
 
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const weatherMain: string = weather.weather[0].main;
   const weatherIcon: string = weatherIcons[weatherMain] || '';
 
@@ -42,7 +50,7 @@ export const ThisDay = ({ weather, city }: Props) => {
       <div className={s.bottom__block}>
         <div className={s.this__time}>
           Time:
-          <span>14:24</span>
+          <span> {now.toLocaleTimeString()}</span>
         </div>
         <div className={s.this__city}>
           <span>{city}</span>

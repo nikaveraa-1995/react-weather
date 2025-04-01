@@ -24,7 +24,7 @@ export const Home = (props: Props) => {
 
         // Для отображения города (можно использовать обратное геокодирование)
         fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_API_KEY}`,
+          `${process.env.REACT_APP_API_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_API_KEY}`,
         )
           .then(response => response.json())
           .then(data => {
@@ -33,7 +33,7 @@ export const Home = (props: Props) => {
           });
       },
       error => {
-        console.error('Ошибка получения геолокации:', error);
+        console.error('Error getting geolocation:', error);
       },
     );
   }, [dispatch]);
@@ -42,7 +42,7 @@ export const Home = (props: Props) => {
     <div className={s.home}>
       <div className={s.wrapper}>
         <ThisDay weather={weather} city={location} />
-        <ThisDayInfo />
+        <ThisDayInfo weather={weather} />
       </div>
       <Days />
     </div>

@@ -20,7 +20,15 @@ const initialState: CurrentWeather = {
   weather: {
     main: {
       temp: 0,
+      feels_like: 0,
+      pressure: 0,
+      humidity: 0,
     },
+
+    wind: {
+      speed: 0,
+    },
+
     name: '',
     weather: [{ main: '', description: '', icon: '' }],
   },
@@ -39,7 +47,10 @@ export const currentWeathersSlice = createSlice({
   name: 'current_weather',
   initialState,
   reducers: {
-    fetchCurrentWeather(state) {
+    fetchCurrentWeather: (
+      state,
+      action: PayloadAction<{ latitude: number; longitude: number }>,
+    ) => {
       state.isLoading = true;
     },
 

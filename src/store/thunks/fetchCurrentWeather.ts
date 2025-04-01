@@ -2,11 +2,15 @@ import { WeatherServise } from '../../services/WeatherServise';
 import { currentWeathersSlice } from '../slices/currentWeatherSlice';
 import { AppDispatch } from '../store';
 
+interface Payload {
+  latitude: number;
+  longitude: number;
+}
+
 export const fetchCurrentWeather =
-  (payLoad: { latitude: number; longitude: number }) =>
-  async (dispatch: AppDispatch) => {
+  (payLoad: Payload) => async (dispatch: AppDispatch) => {
     try {
-      dispatch(currentWeathersSlice.actions.fetchCurrentWeather());
+      dispatch(currentWeathersSlice.actions.fetchCurrentWeather(payLoad));
       const res = await WeatherServise.getCurrentWeather(
         payLoad.latitude,
         payLoad.longitude,

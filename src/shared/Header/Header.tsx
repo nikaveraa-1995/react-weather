@@ -3,16 +3,22 @@ import Select from 'react-select';
 import { GlobalSvgSelector } from '../../assets/icons/global/GlobalSvgSelector';
 import { useTheme } from '../../hooks/useTheme';
 import { Theme } from '../../context/ThemeContext';
+import { useState } from 'react';
+import { useCustomDispatch } from '../../hooks/store';
+import { fetchCurrentWeather } from '../../store/slices/currentWeatherSlice';
 
 interface Props {}
 
 export const Header = (props: Props) => {
   const theme = useTheme();
+  const dispatch = useCustomDispatch();
   const options = [
     { value: 'city-1', label: 'Slavutich' },
-    { value: 'city-2', label: 'Chernigiv' },
+    { value: 'city-2', label: 'Chernihiv' },
     { value: 'city-3', label: 'Kyiv' },
   ];
+
+  const [selectedCity, setSelectedCity] = useState(options[0]);
 
   const colorStyles = {
     control: (styles: any) => ({
@@ -40,6 +46,34 @@ export const Header = (props: Props) => {
     theme.changeTheme(theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
   }
 
+  function handleCityChange(selectedOption: any) {
+    setSelectedCity(selectedOption);
+
+    const cityName = selectedOption.label;
+    console.log('Fetching weather for city:', cityName);
+
+    fetch(
+      `${process.env.REACT_APP_API_URL}/weather?q=${cityName}&appid=${process.env.REACT_APP_API_KEY}`,
+    )
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Weather data received:', data);
+        const { lat, lon } = data.coord || {};
+        if (lat && lon) {
+          dispatch(fetchCurrentWeather({ latitude: lat, longitude: lon }));
+        } else {
+          console.error('Coordinates not found in the response:', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching weather data:', error);
+      });
+  }
   return (
     <header className={s.header}>
       <div className={s.wrapper}>
@@ -53,7 +87,8 @@ export const Header = (props: Props) => {
           <GlobalSvgSelector id="change-theme" />
         </div>
         <Select
-          defaultValue={options[0]}
+          value={selectedCity}
+          onChange={handleCityChange}
           styles={colorStyles}
           options={options}
         />
