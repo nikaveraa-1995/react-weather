@@ -305,6 +305,7 @@ export const GlobalSvgSelector = ({ id }: Props) => {
           </defs>
         </svg>
       );
+
     case 'close':
       return (
         <svg

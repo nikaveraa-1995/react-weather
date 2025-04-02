@@ -10,13 +10,7 @@ interface Tab {
 export const Tabs = (props: Props) => {
   const tabs: Tab[] = [
     {
-      value: 'For a week',
-    },
-    {
-      value: 'For 10 days',
-    },
-    {
-      value: 'For a month',
+      value: 'For 5 days',
     },
   ];
 
