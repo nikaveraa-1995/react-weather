@@ -57,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "resolve-url-loader": "^5.0.0"
   }
 }

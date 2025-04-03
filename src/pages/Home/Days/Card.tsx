@@ -5,12 +5,14 @@ import { GlobalSvgSelector } from '../../../assets/icons/global/GlobalSvgSelecto
 
 interface Props {
   day: Day;
+  onClick: () => void;
 }
 
-export const Card = ({ day }: Props) => {
+export const Card = ({ day, onClick }: Props) => {
   const { day_name, day_info, icon_id, temp_day, temp_night, info } = day;
+
   return (
-    <div className={s.card}>
+    <div className={s.card} onClick={onClick}>
       <div className={s.day__name}>{day_name}</div>
       <div className={s.day__info}>{day_info}</div>
       <div className={s.img}>

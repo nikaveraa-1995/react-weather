@@ -3,8 +3,14 @@ import s from './Days.module.scss';
 import { Card } from './Card';
 import { Tabs } from './Tabs';
 import axios from 'axios';
+import { Weather } from '../../../store/types/types';
+import { Popup } from '../../../shared/Popup/Popup';
 
-interface Props {}
+interface Props {
+  day: string;
+  weather: Weather;
+  city: string;
+}
 
 export interface Day {
   day_name: string;
@@ -14,78 +20,6 @@ export interface Day {
   temp_night: string;
   info: string;
 }
-
-// export const Days = (props: Props) => {
-//   const days: Day[] = [
-//     {
-//       day_name: 'Today',
-//       day_info: 'Aug 28',
-//       icon_id: 'sun',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'Cloudy',
-//     },
-//     {
-//       day_name: 'Tomorrow',
-//       day_info: 'Aug 29',
-//       icon_id: 'small_rain_sun',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'light rain and sun',
-//     },
-//     {
-//       day_name: 'Wed',
-//       day_info: 'Aug 30',
-//       icon_id: 'small_rain',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'light rain',
-//     },
-//     {
-//       day_name: 'Thu',
-//       day_info: 'Aug 28',
-//       icon_id: 'mainly_cloudy',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'Cloudy',
-//     },
-//     {
-//       day_name: 'Fri',
-//       day_info: 'Aug 28',
-//       icon_id: 'rain',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'Cloudy',
-//     },
-//     {
-//       day_name: 'Sat',
-//       day_info: 'Aug 28',
-//       icon_id: 'sun',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'Cloudy',
-//     },
-//     {
-//       day_name: 'Sun',
-//       day_info: 'Aug 28',
-//       icon_id: 'sun',
-//       temp_day: '+18',
-//       temp_night: '+15',
-//       info: 'Cloudy',
-//     },
-//   ];
-
-//   return (
-//     <>
-//       <Tabs />
-//       <div className={s.days}>
-//         {days.map((day: Day, index: number) => (
-//           <Card key={`${day.icon_id}-${index}`} day={day} />
-//         ))}
-//       </div>
-//     </>
-//   );
-// };
 
 const weatherIcons: { [key: string]: string } = {
   Clear: 'sun',
@@ -100,8 +34,9 @@ const weatherIcons: { [key: string]: string } = {
   'Clouds+Rain': 'small_rain_sun',
 };
 
-export const Days = (props: Props) => {
+export const Days = ({ day, weather, city }: Props) => {
   const [days, setDays] = useState<Day[]>([]);
+  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
   const [error, setError] = useState<string>('');
 
   const fetchWeatherData = async (lat: number, lon: number) => {
@@ -164,8 +99,19 @@ export const Days = (props: Props) => {
       <Tabs />
       <div className={s.days}>
         {days.map((day: Day, index: number) => (
-          <Card key={`${day.icon_id}-${index}`} day={day} />
+          <Card
+            key={`${day.icon_id}-${index}`}
+            day={day}
+            onClick={() => setSelectedDay(day)}
+          />
         ))}
+        {selectedDay && (
+          <Popup
+            weather={weather}
+            city={city}
+            onClose={() => setSelectedDay(null)}
+          />
+        )}
       </div>
     </>
   );

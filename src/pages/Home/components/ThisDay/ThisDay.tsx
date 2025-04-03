@@ -1,10 +1,10 @@
 import React from 'react';
-import { GlobalSvgSelector } from '../../../../assets/icons/global/GlobalSvgSelector';
 import { Weather } from '../../../../store/types/types';
 import s from './ThisDay.module.scss';
 import { useSelector } from 'react-redux';
 import { selectCurrentDate } from '../../../../store/selectors';
 import { useState, useEffect } from 'react';
+import { GlobalSvgSelector } from '../../../../assets/icons/global/GlobalSvgSelector';
 
 interface Props {
   weather: Weather;
@@ -13,14 +13,14 @@ interface Props {
 
 const weatherIcons: { [key: string]: string } = {
   Clear: 'sun',
-  Clouds: 'cloud',
+  Clouds: 'mainly_cloudy',
   Rain: 'rain',
-  Thunderstorm: 'thunder',
+  Thunderstorm: 'mainly_cloudy',
   Drizzle: 'small_rain',
-  Snow: 'snow',
-  Mist: 'mist',
-  Fog: 'fog',
-  Haze: 'haze',
+  Snow: 'mainly_cloudy',
+  Mist: 'mainly_cloudy',
+  Fog: 'mainly_cloudy',
+  Haze: 'mainly_cloudy',
   'Clouds+Rain': 'small_rain_sun',
 };
 
@@ -33,7 +33,6 @@ export const ThisDay = ({ weather, city }: Props) => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
-
   const weatherMain: string = weather.weather[0].main;
   const weatherIcon: string = weatherIcons[weatherMain] || '';
 

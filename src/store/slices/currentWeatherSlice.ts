@@ -6,12 +6,12 @@ import { format } from 'date-fns';
 type CurrentWeather = {
   weather: Weather;
   isLoading: boolean;
-  responce: Responce;
+  response: Response;
   currentDate: string;
   location: string;
 };
 
-type Responce = {
+type Response = {
   status: number;
   message: string;
 };
@@ -35,7 +35,7 @@ const initialState: CurrentWeather = {
 
   currentDate: format(new Date(), 'dd.MM.yy'),
   isLoading: false,
-  responce: {
+  response: {
     status: 0,
     message: '',
   },
@@ -77,7 +77,7 @@ export const currentWeathersSlice = createSlice({
       state.weather = data; // Сохраняем информацию о погоде
       state.location = cityName; // Сохраняем город
       state.isLoading = false;
-      state.responce = {
+      state.response = {
         status: action.payload.status,
         message: action.payload.statusText,
       };
@@ -88,7 +88,7 @@ export const currentWeathersSlice = createSlice({
       action: PayloadAction<AxiosResponse<Weather>>,
     ) {
       state.isLoading = false;
-      state.responce = {
+      state.response = {
         status: action.payload.status,
         message: action.payload.statusText,
       };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ThisDay } from './ThisDay/ThisDay';
 import { ThisDayInfo } from './ThisDayInfo/ThisDayInfo';
 import { Days } from '../Days/Days';
@@ -6,13 +6,20 @@ import s from './Home.module.scss';
 import { useCustomDispatch, UseCustomSelector } from '../../../hooks/store';
 import { fetchCurrentWeather } from '../../../store/thunks/fetchCurrentWeather';
 import { selectCurrentWeatherData } from '../../../store/selectors';
+import { Weather } from '../../../store/types/types';
 
-interface Props {}
+interface Props {
+  weather: Weather;
+  city: string;
+  day: string;
+  setCity: (city: string) => void;
+}
 
-export const Home = (props: Props) => {
+export const Home = ({ weather, city, day, setCity }: Props) => {
   const dispatch = useCustomDispatch();
-  const { weather } = UseCustomSelector(selectCurrentWeatherData);
-  const [location, setLocation] = useState<string>('');
+  const { weather: currentWeather } = UseCustomSelector(
+    selectCurrentWeatherData,
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -29,22 +36,22 @@ export const Home = (props: Props) => {
           .then(response => response.json())
           .then(data => {
             const cityName = data.name; // Город, полученный из API
-            setLocation(cityName);
+            setCity(cityName);
           });
       },
       error => {
         console.error('Error getting geolocation:', error);
       },
     );
-  }, [dispatch]);
+  }, [dispatch, setCity]);
 
   return (
     <div className={s.home}>
       <div className={s.wrapper}>
-        <ThisDay weather={weather} city={location} />
+        <ThisDay weather={currentWeather} city={city} />
         <ThisDayInfo weather={weather} />
       </div>
-      <Days />
+      <Days day={day} weather={weather} city={city} />
     </div>
   );
 };
