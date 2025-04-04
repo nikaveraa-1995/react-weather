@@ -6,30 +6,31 @@ import { Header } from './shared/Header/Header';
 import { Popup } from './shared/Popup/Popup';
 import { useSelector } from 'react-redux';
 import { selectCurrentWeatherData } from './store/selectors';
+import { Day } from './pages/Home/Days/Days';
 
 function App() {
   const weather = useSelector(selectCurrentWeatherData); // Получаем данные о погоде
-  const weatherData = weather.weather;
+  console.log('Weather data:', weather);
 
-  // Получаем текущий день недели
-  const currentDay = new Date().toLocaleString('en-us', { weekday: 'long' });
-
-  const [showPopup, setShowPopup] = useState(false); // Стейт для отображения/скрытия попапа
-  const [city, setCity] = useState<string>(''); // Инициализируем пустую строку
+  const currentWeather = weather.weather;
+  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [city, setCity] = useState<string>('');
 
   useEffect(() => {
-    // Здесь ты получаешь город динамически, например через геолокацию
-    setCity(''); // Или setCity(cityName); если получен из API
-  }, []); // Используем пустой
+    setCity('');
+  }, []);
 
   const handleClosePopup = () => {
+    console.log('Selected day:');
     setShowPopup(false);
+    setSelectedDay(null);
   };
 
   return (
     <div className="global-container">
-      {showPopup && (
-        <Popup weather={weatherData} city={city} onClose={handleClosePopup} />
+      {showPopup && selectedDay && (
+        <Popup day={selectedDay} city={city} onClose={handleClosePopup} />
       )}
 
       <div className="container">
@@ -39,10 +40,11 @@ function App() {
             path="/"
             element={
               <Home
-                weather={weatherData}
+                weather={currentWeather}
                 city={city}
                 setCity={setCity}
-                day={currentDay}
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
               />
             }
           />

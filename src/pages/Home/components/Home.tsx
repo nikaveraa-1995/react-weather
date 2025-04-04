@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ThisDay } from './ThisDay/ThisDay';
 import { ThisDayInfo } from './ThisDayInfo/ThisDayInfo';
-import { Days } from '../Days/Days';
+import { Day, Days } from '../Days/Days';
 import s from './Home.module.scss';
 import { useCustomDispatch, UseCustomSelector } from '../../../hooks/store';
 import { fetchCurrentWeather } from '../../../store/thunks/fetchCurrentWeather';
@@ -11,11 +11,19 @@ import { Weather } from '../../../store/types/types';
 interface Props {
   weather: Weather;
   city: string;
-  day: string;
+
   setCity: (city: string) => void;
+  selectedDay: Day | null;
+  setSelectedDay: (day: Day | null) => void;
 }
 
-export const Home = ({ weather, city, day, setCity }: Props) => {
+export const Home = ({
+  weather,
+  city,
+  setCity,
+  selectedDay,
+  setSelectedDay,
+}: Props) => {
   const dispatch = useCustomDispatch();
   const { weather: currentWeather } = UseCustomSelector(
     selectCurrentWeatherData,
@@ -51,7 +59,12 @@ export const Home = ({ weather, city, day, setCity }: Props) => {
         <ThisDay weather={currentWeather} city={city} />
         <ThisDayInfo weather={weather} />
       </div>
-      <Days day={day} weather={weather} city={city} />
+      <Days
+        weather={weather}
+        city={city}
+        selectedDay={selectedDay}
+        setSelectedDay={setSelectedDay}
+      />
     </div>
   );
 };

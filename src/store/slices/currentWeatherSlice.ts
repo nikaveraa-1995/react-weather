@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 
 type CurrentWeather = {
   weather: Weather;
+
   isLoading: boolean;
   response: Response;
   currentDate: string;

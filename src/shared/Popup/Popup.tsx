@@ -3,12 +3,11 @@ import s from './Popup.module.scss';
 import { GlobalSvgSelector } from '../../assets/icons/global/GlobalSvgSelector';
 import { Item } from '../../pages/Home/components/ThisDayInfo/ThisDayInfo';
 import { ThisDayItem } from '../../pages/Home/components/ThisDayInfo/ThisDayItem';
-import { Weather } from '../../store/types/types';
-import { useSelector } from 'react-redux';
-import { selectCurrentDate } from '../../store/selectors';
+
+import { Day } from '../../pages/Home/Days/Days';
 
 interface Props {
-  weather: Weather;
+  day: Day;
   city: string;
   onClose: () => void;
 }
@@ -25,9 +24,7 @@ const weatherIcons: { [key: string]: string } = {
   Haze: 'mainly_cloudy',
   'Clouds+Rain': 'small_rain_sun',
 };
-export const Popup = ({ onClose, weather, city }: Props) => {
-  const currentDate = useSelector(selectCurrentDate);
-
+export const Popup = ({ onClose, day, city }: Props) => {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -39,35 +36,38 @@ export const Popup = ({ onClose, weather, city }: Props) => {
     {
       icon_id: 'temp',
       name: 'Temperature',
-      value: `${Math.round(weather.main.temp)}° - feels like ${Math.round(
-        weather.main.feels_like,
+      value: `${Math.round(day.temp_day)}° - feels like ${Math.round(
+        day.feels_like,
       )}°`,
     },
     {
       icon_id: 'pressure',
       name: 'Pressure',
-      value: `${weather.main.pressure} hPa`,
+      value: `${day.pressure} hPa`,
     },
     {
       icon_id: 'precipitation',
       name: 'Precipitation',
-      value: `${weather.main.humidity}%`,
+      value: `${day.humidity}%`,
     },
     {
       icon_id: 'wind',
       name: 'Wind',
-      value: `${weather.wind.speed} m/s`,
+      value: `${day.wind_speed} m/s`,
     },
   ];
-  const weatherMain: string = weather.weather[0].main;
-  const weatherIcon: string = weatherIcons[weatherMain] || '';
+
+  const weatherMain = day.weather && day.weather[0] ? day.weather[0].day : ''; // Проверка на наличие данных в массиве
+  const weatherIcon = weatherIcons[weatherMain] || ''; // Если иконка не найден
+
   return (
     <>
       <div className={s.blur} onClick={onClose}></div>
+
       <div className={s.popup}>
         <div className={s.day}>
-          <div className={s.day__temp}>{Math.round(weather.main.temp)}°</div>
-          <div className={s.day__name}>{currentDate}</div>
+          <div className={s.day__temp}>{Math.round(day.temp_day)}°</div>
+          <div className={s.day__name}>{day.day_name}</div>
           <div className={s.img}>
             <GlobalSvgSelector id={weatherIcon} />
           </div>

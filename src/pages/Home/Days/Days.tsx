@@ -7,18 +7,33 @@ import { Weather } from '../../../store/types/types';
 import { Popup } from '../../../shared/Popup/Popup';
 
 interface Props {
-  day: string;
   weather: Weather;
+
   city: string;
+  selectedDay: Day | null;
+  setSelectedDay: (day: Day | null) => void;
 }
 
 export interface Day {
+  pressure: number;
+  humidity: number;
+  feels_like: number;
+
   day_name: string;
-  day_info: string;
-  icon_id: string;
-  temp_day: string;
-  temp_night: string;
   info: string;
+  icon_id: string;
+
+  temp_night: number;
+
+  weather_main: string;
+
+  day_info: string;
+
+  temp_day: number;
+
+  wind_speed: number;
+
+  weather: { day: string; description: string; icon: string }[];
 }
 
 const weatherIcons: { [key: string]: string } = {
@@ -34,7 +49,7 @@ const weatherIcons: { [key: string]: string } = {
   'Clouds+Rain': 'small_rain_sun',
 };
 
-export const Days = ({ day, weather, city }: Props) => {
+export const Days = ({ weather, city }: Props) => {
   const [days, setDays] = useState<Day[]>([]);
   const [selectedDay, setSelectedDay] = useState<Day | null>(null);
   const [error, setError] = useState<string>('');
@@ -100,6 +115,7 @@ export const Days = ({ day, weather, city }: Props) => {
       <div className={s.days}>
         {days.map((day: Day, index: number) => (
           <Card
+            weather={weather}
             key={`${day.icon_id}-${index}`}
             day={day}
             onClick={() => setSelectedDay(day)}
@@ -107,8 +123,8 @@ export const Days = ({ day, weather, city }: Props) => {
         ))}
         {selectedDay && (
           <Popup
-            weather={weather}
             city={city}
+            day={selectedDay}
             onClose={() => setSelectedDay(null)}
           />
         )}

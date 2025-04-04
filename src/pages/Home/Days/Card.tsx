@@ -2,13 +2,15 @@ import React from 'react';
 import s from './Days.module.scss';
 import { Day } from './Days';
 import { GlobalSvgSelector } from '../../../assets/icons/global/GlobalSvgSelector';
+import { Weather } from '../../../store/types/types';
 
 interface Props {
   day: Day;
+  weather: Weather;
   onClick: () => void;
 }
 
-export const Card = ({ day, onClick }: Props) => {
+export const Card = ({ day, weather, onClick }: Props) => {
   const { day_name, day_info, icon_id, temp_day, temp_night, info } = day;
 
   return (
