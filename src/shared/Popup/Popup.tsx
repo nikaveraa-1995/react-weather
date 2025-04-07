@@ -36,9 +36,7 @@ export const Popup = ({ onClose, day, city }: Props) => {
     {
       icon_id: 'temp',
       name: 'Temperature',
-      value: `${Math.round(day.temp_day)}° - feels like ${Math.round(
-        day.feels_like,
-      )}°`,
+      value: `${day.temp_day}° - feels like ${day.feels_like}°`,
     },
     {
       icon_id: 'pressure',
@@ -57,8 +55,8 @@ export const Popup = ({ onClose, day, city }: Props) => {
     },
   ];
 
-  const weatherMain = day.weather && day.weather[0] ? day.weather[0].day : ''; // Проверка на наличие данных в массиве
-  const weatherIcon = weatherIcons[weatherMain] || ''; // Если иконка не найден
+  const weatherMain = day.weather[0].day;
+  const weatherIcon = weatherIcons[weatherMain] || '';
 
   return (
     <>

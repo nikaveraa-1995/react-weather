@@ -18,21 +18,14 @@ export interface Day {
   pressure: number;
   humidity: number;
   feels_like: number;
-
   day_name: string;
   info: string;
   icon_id: string;
-
   temp_night: number;
-
-  weather_main: string;
-
+  weather_main: number;
   day_info: string;
-
   temp_day: number;
-
   wind_speed: number;
-
   weather: { day: string; description: string; icon: string }[];
 }
 
@@ -49,9 +42,9 @@ const weatherIcons: { [key: string]: string } = {
   'Clouds+Rain': 'small_rain_sun',
 };
 
-export const Days = ({ weather, city }: Props) => {
+export const Days = ({ weather, city, selectedDay, setSelectedDay }: Props) => {
   const [days, setDays] = useState<Day[]>([]);
-  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
+
   const [error, setError] = useState<string>('');
 
   const fetchWeatherData = async (lat: number, lon: number) => {
@@ -72,16 +65,25 @@ export const Days = ({ weather, city }: Props) => {
 
       const forecastData = filteredForecast.map((day: any) => ({
         day_name: new Date(day.dt * 1000).toLocaleDateString('en-US', {
-          weekday: 'short',
+          weekday: 'long',
         }),
-        day_info: new Date(day.dt * 1000).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-        }),
+
         icon_id: weatherIcons[day.weather[0].main] || '',
-        temp_day: `${Math.round(day.main.temp)}°`,
-        temp_night: `${Math.round(day.main.temp_min)}°`,
+        temp_day: Math.round(day.main.temp),
+        temp_night: Math.round(day.main.temp_min),
         info: day.weather[0].description,
+        feels_like: Math.round(day.main.feels_like),
+        pressure: day.main.pressure,
+        humidity: day.main.humidity,
+        wind_speed: day.wind.speed,
+        weather_main: day.weather[0].main,
+        weather: [
+          {
+            day: day.weather[0].main,
+            description: day.weather[0].description,
+            icon: day.weather[0].icon,
+          },
+        ],
       }));
 
       setDays(forecastData);

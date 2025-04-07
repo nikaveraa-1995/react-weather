@@ -22,10 +22,10 @@ function App() {
   }, []);
 
   const handleClosePopup = () => {
-    console.log('Selected day:');
     setShowPopup(false);
     setSelectedDay(null);
   };
+  console.log('selectedDay', selectedDay);
 
   return (
     <div className="global-container">
