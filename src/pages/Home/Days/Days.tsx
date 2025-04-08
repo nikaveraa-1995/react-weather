@@ -44,71 +44,74 @@ const weatherIcons: { [key: string]: string } = {
 
 export const Days = ({ weather, city, selectedDay, setSelectedDay }: Props) => {
   const [days, setDays] = useState<Day[]>([]);
-
-  const [error, setError] = useState<string>('');
-
-  const fetchWeatherData = async (lat: number, lon: number) => {
-    try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&units=metric`,
-      );
-      const forecast = response.data.list;
-
-      if (!forecast) {
-        console.error('Forecast data not found');
-        return;
-      }
-
-      const filteredForecast = forecast.filter(
-        (_: any, index: number) => index % 8 === 0,
-      );
-
-      const forecastData = filteredForecast.map((day: any) => ({
-        day_name: new Date(day.dt * 1000).toLocaleDateString('en-US', {
-          weekday: 'long',
-        }),
-
-        icon_id: weatherIcons[day.weather[0].main] || '',
-        temp_day: Math.round(day.main.temp),
-        temp_night: Math.round(day.main.temp_min),
-        info: day.weather[0].description,
-        feels_like: Math.round(day.main.feels_like),
-        pressure: day.main.pressure,
-        humidity: day.main.humidity,
-        wind_speed: day.wind.speed,
-        weather_main: day.weather[0].main,
-        weather: [
-          {
-            day: day.weather[0].main,
-            description: day.weather[0].description,
-            icon: day.weather[0].icon,
-          },
-        ],
-      }));
-
-      setDays(forecastData);
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-    }
-  };
+  const [error] = useState<string>('');
 
   useEffect(() => {
-    if ('geolocation' in navigator) {
-      // Получение геолокации
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          fetchWeatherData(latitude, longitude);
-        },
-        error => {
-          console.error('Error getting geolocation', error);
-          setError('Unable to retrieve your location');
-        },
-      );
-    } else {
-      setError('Geolocation is not supported by this browser.');
+    if (city) {
+      // Запрашиваем данные погоды для нового города
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.REACT_APP_API_KEY}&units=metric`,
+        )
+        .then(response => {
+          const forecast = response.data.list;
+
+          if (!forecast) {
+            console.error('Forecast data not found');
+            return;
+          }
+
+          const filteredForecast = forecast.filter(
+            (_: any, index: number) => index % 8 === 0,
+          );
+
+          const forecastData = filteredForecast.map((day: any) => ({
+            day_name: new Date(day.dt * 1000).toLocaleDateString('en-US', {
+              weekday: 'long',
+            }),
+
+            icon_id: weatherIcons[day.weather[0].main] || '',
+            temp_day: Math.round(day.main.temp),
+            temp_night: Math.round(day.main.temp_min),
+            info: day.weather[0].description,
+            feels_like: Math.round(day.main.feels_like),
+            pressure: day.main.pressure,
+            humidity: day.main.humidity,
+            wind_speed: day.wind.speed,
+            weather_main: day.weather[0].main,
+            weather: [
+              {
+                day: day.weather[0].main,
+                description: day.weather[0].description,
+                icon: day.weather[0].icon,
+              },
+            ],
+          }));
+
+          setDays(forecastData);
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error);
+        });
     }
-  }, []);
+  }, [city]); // Добавляем зависимость от city
+  // useEffect(() => {
+  //   if ('geolocation' in navigator) {
+  //     // Получение геолокации
+  //     navigator.geolocation.getCurrentPosition(
+  //       position => {
+  //         const { latitude, longitude } = position.coords;
+  //         fetchWeatherData(latitude, longitude);
+  //       },
+  //       error => {
+  //         console.error('Error getting geolocation', error);
+  //         setError('Unable to retrieve your location');
+  //       },
+  //     );
+  //   } else {
+  //     setError('Geolocation is not supported by this browser.');
+  //   }
+  // }, []);
 
   return (
     <>

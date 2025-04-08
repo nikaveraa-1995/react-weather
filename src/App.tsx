@@ -34,7 +34,7 @@ function App() {
       )}
 
       <div className="container">
-        <Header />
+        <Header city={city} setCity={setCity} />
         <Routes>
           <Route
             path="/"

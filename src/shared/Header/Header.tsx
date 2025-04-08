@@ -3,11 +3,20 @@ import Select from 'react-select';
 import { GlobalSvgSelector } from '../../assets/icons/global/GlobalSvgSelector';
 import { useTheme } from '../../hooks/useTheme';
 import { Theme } from '../../context/ThemeContext';
+import { useState } from 'react';
+import { fetchCurrentWeather } from '../../store/thunks/fetchCurrentWeather';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/thunks/fetchCurrentWeather';
 
-interface Props {}
+interface Props {
+  city: string;
+  setCity: (city: string) => void;
+}
 
-export const Header = (props: Props) => {
+export const Header = ({ city, setCity }: Props) => {
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
+  const [inputValue, setInputValue] = useState('');
 
   const options = [
     { value: 'city-1', label: 'Slavutich' },
@@ -37,6 +46,27 @@ export const Header = (props: Props) => {
     }),
   };
 
+  const handleSelectChange = (selectedOption: any) => {
+    if (selectedOption) {
+      const selectedCity = selectedOption.label;
+      setCity(selectedCity);
+      dispatch(fetchCurrentWeather({ city: selectedCity }));
+      setInputValue(selectedCity);
+    }
+  };
+
+  const handleInputChange = (newValue: string) => {
+    setInputValue(newValue);
+    return newValue;
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      setCity(inputValue);
+      dispatch(fetchCurrentWeather({ city: inputValue }));
+    }
+  };
+
   function changeTheme() {
     theme.changeTheme(theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
   }
@@ -53,7 +83,15 @@ export const Header = (props: Props) => {
         <div className={s.change_theme} onClick={changeTheme}>
           <GlobalSvgSelector id="change-theme" />
         </div>
-        <Select styles={colorStyles} options={options} />
+        <Select
+          styles={colorStyles}
+          options={options}
+          isSearchable
+          onChange={handleSelectChange}
+          onInputChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          value={{ label: inputValue, value: inputValue }}
+        />
       </div>
     </header>
   );

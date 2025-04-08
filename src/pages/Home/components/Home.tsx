@@ -53,6 +53,12 @@ export const Home = ({
     );
   }, [dispatch, setCity]);
 
+  useEffect(() => {
+    if (city) {
+      dispatch(fetchCurrentWeather({ city }));
+    }
+  }, [city, dispatch]);
+
   return (
     <div className={s.home}>
       <div className={s.wrapper}>

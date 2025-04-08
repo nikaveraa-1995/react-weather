@@ -16,4 +16,9 @@ export class WeatherServise {
   ): Promise<AxiosResponse<Weather>> {
     return api.get<Weather>(`/weather?lat=${latitude}&lon=${longitude}`);
   }
+  static getCurrentWeatherByCity(city: string) {
+    return api.get(
+      `${process.env.REACT_APP_API_URL}/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`,
+    );
+  }
 }
