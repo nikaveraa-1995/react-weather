@@ -79,7 +79,7 @@ export const CitySelect = ({ city, setCity }: Props) => {
     }),
     menu: (styles: any) => ({
       ...styles,
-      backgroundColor: theme.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT,
+      backgroundColor: theme.theme === Theme.DARK ? '#4F4F4F' : '#fff',
       color: theme.theme === Theme.DARK ? '#fff' : '#000',
     }),
   };

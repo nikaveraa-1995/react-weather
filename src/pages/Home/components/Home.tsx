@@ -60,7 +60,7 @@ export const Home = ({
   }, [city, dispatch]);
 
   return (
-    <div className={s.home}>
+    <main className={s.home}>
       <div className={s.wrapper}>
         <ThisDay weather={currentWeather} city={city} />
         <ThisDayInfo weather={weather} />
@@ -71,6 +71,6 @@ export const Home = ({
         selectedDay={selectedDay}
         setSelectedDay={setSelectedDay}
       />
-    </div>
+    </main>
   );
 };

@@ -38,7 +38,7 @@
   }
 
   @include sm {
-    align-items: flex-start; /* Выравнивание по левому краю */
+    align-items: flex-start;
     margin-bottom: 15px;
   }
 }

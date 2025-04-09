@@ -11,7 +11,7 @@
   border-radius: 10px;
 
   @include sm {
-    flex-direction: column; /* Переводим элементы в колонку */
+    flex-direction: column;
     display: block;
     padding: 20px;
     max-width: 100%;
