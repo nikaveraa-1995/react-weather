@@ -1,5 +1,12 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins-media' as *;
+
 .wrapper {
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+
+  @include sm {
+    flex-direction: column;
+  }
 }

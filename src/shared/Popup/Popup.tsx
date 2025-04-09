@@ -69,6 +69,7 @@ export const Popup = ({ onClose, day, city }: Props) => {
           <div className={s.img}>
             <GlobalSvgSelector id={weatherIcon} />
           </div>
+
           <div className={s.day__time}>
             Time:
             <span> {now.toLocaleTimeString()}</span>

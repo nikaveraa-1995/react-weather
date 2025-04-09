@@ -1,4 +1,5 @@
-@import '/src/styles/variables.scss';
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins-media' as *;
 
 .this__day {
   padding: 20px;
@@ -7,6 +8,12 @@
   background: var(#{--components-background-default});
   box-shadow: $box-shadow;
   border-radius: 10px;
+
+  @include sm {
+    display: block;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
 }
 
 .top__block {
@@ -15,6 +22,7 @@
   justify-content: space-between;
   width: 100%;
   margin-bottom: 30px;
+
   svg {
     width: 119px;
     height: 119px;
@@ -27,6 +35,11 @@
   .this__day_name {
     font-size: 40px;
     color: var(#{--text-color-default});
+  }
+
+  @include sm {
+    align-items: flex-start; /* Выравнивание по левому краю */
+    margin-bottom: 15px;
   }
 }
 

@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@use '../../styles/mixins-media' as *;
+@use '../../styles/variables' as *;
 
 .popup {
   position: absolute;
@@ -14,6 +15,14 @@
   background: var(#{--components-background-default});
   box-shadow: $box-shadow;
   border-radius: 20px;
+
+  @include sm {
+    flex-direction: column; /* на мобильных устройствах элементы идут вертикально */
+    padding: 20px;
+    max-width: 400px;
+    left: 50%; // Центрируем по горизонтали на мобильных устройствах
+    transform: translateX(-50%) translateY(-5%); // Цен
+  }
 }
 .blur {
   position: fixed;
@@ -40,6 +49,11 @@
   }
 }
 
+.this__day_info_items {
+  @include sm {
+    margin-top: 20px; /* Отступ между this__day и this__day_info на мобильных */
+  }
+}
 .day {
   .day__temp {
     font-weight: 500;
