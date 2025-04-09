@@ -26,7 +26,7 @@ export const CitySelect = ({ city, setCity }: Props) => {
   >([]);
 
   useEffect(() => {
-    if (inputValue.trim().length >= 2) {
+    if (inputValue.trim().length > 1) {
       const delay = setTimeout(async () => {
         const cities = await fetchCities(inputValue);
         setCityOptions(cities);
@@ -46,6 +46,7 @@ export const CitySelect = ({ city, setCity }: Props) => {
   const handleChange = (selectedOption: any) => {
     if (selectedOption) {
       setInputValue(selectedOption.label);
+      setCity(selectedOption.label);
       dispatch(fetchCurrentWeather({ city: selectedOption.label }));
     }
   };
