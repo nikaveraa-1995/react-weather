@@ -17,11 +17,14 @@
   border-radius: 20px;
 
   @include sm {
-    flex-direction: column; /* на мобильных устройствах элементы идут вертикально */
+    flex-direction: column;
+    width: calc(
+      100% - 40px
+    ); // ширина минус отступы по краям (по 20px с каждой стороны)
+    max-width: 400px; // но не больше 400px
+    left: 50%;
+    transform: translateX(-50%) translateY(-5%);
     padding: 20px;
-    max-width: 400px;
-    left: 50%; // Центрируем по горизонтали на мобильных устройствах
-    transform: translateX(-50%) translateY(-5%); // Цен
   }
 }
 .blur {
